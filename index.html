@@ -1,256 +1,465 @@
 <!DOCTYPE html>
+
 <html lang="ko">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>경신스 - 경제 뉴스 스크랩</title>
+
     <style>
+
         :root {
+
             --primary-color: #2563eb;
+
             --bg-color: #f8fafc;
+
             --card-bg: #ffffff;
+
             --text-color: #333333;
+
             --title-color: #1e293b;
+
             --border-color: #cbd5e1;
+
             --th-bg: #f1f5f9;
+
         }
+
         [data-theme="dark"] {
+
             --primary-color: #60a5fa;
+
             --bg-color: #121212;
+
             --card-bg: #1e1e1e;
+
             --text-color: #e5e5e5;
+
             --title-color: #ffffff;
+
             --border-color: #333333;
+
             --th-bg: #2d2d2d;
+
         }
+
         body {
+
             font-family: 'Pretendard', -apple-system, sans-serif;
+
             background-color: var(--bg-color);
+
             color: var(--text-color);
+
             max-width: 800px;
+
             margin: 0 auto;
+
             padding: 20px;
+
             transition: background-color 0.3s, color 0.3s;
+
         }
+
         /* Header Style */
+
         .header-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; position: relative; }
+
         .header-spacer { width: 50px; }
+
         .header-title { margin: 0; font-size: 2.2rem; font-weight: 800; color: var(--title-color); text-align: center; flex-grow: 1; letter-spacing: -0.5px; }
+
         .theme-toggle-btn { width: 50px; padding: 6px 0; font-size: 1rem; background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; text-align: center; transition: all 0.2s; }
+
         
+
         .card { background-color: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: background-color 0.3s; }
+
         .card h2 { margin-top: 0; color: var(--primary-color); font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+
         
+
         #news-feed { margin: 0; padding-left: 20px; font-size: 0.9rem; }
+
         #news-feed li { margin-bottom: 6px; }
+
         #news-feed a { color: var(--text-color); text-decoration: none; }
-        #news-feed a:hover { text-decoration: underline; color: var(--primary-color); }
+
         
+
         label { display: block; margin-top: 15px; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; }
-        select, input, textarea, button { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: var(--bg-color); color: var(--text-color); transition: all 0.3s; }
-        textarea { resize: vertical; }
+
+        select, input, textarea, button { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: var(--bg-color); color: var(--text-color); }
+
         button.submit-btn { background-color: var(--primary-color); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-size: 1.05rem; padding: 14px; }
-        button.submit-btn:hover { opacity: 0.9; }
-        button.submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
+
         
+
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
+
         th { background-color: var(--th-bg); font-weight: bold; color: var(--title-color); }
+
         .penalty-high { color: #ef4444; font-weight: bold; }
 
+
+
         /* 게시글 피드 스타일 */
+
         .post-card { border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-top: 15px; background-color: var(--bg-color); }
+
         .post-header { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
+
         .post-name { font-weight: bold; color: var(--primary-color); }
+
         .post-date { font-size: 0.8rem; color: gray; }
+
         .post-content h4 { margin: 10px 0 5px 0; font-size: 0.9rem; color: var(--title-color); }
+
         .post-content p { margin: 0 0 10px 0; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.4; }
+
         .post-link a { color: var(--primary-color); font-size: 0.85rem; text-decoration: underline; }
+
         #loading-text { text-align: center; font-size: 0.9rem; color: gray; padding: 20px; }
+
     </style>
+
 </head>
+
 <body>
+
     <div class="header-container">
+
         <div class="header-spacer"></div>
+
         <h1 class="header-title">🐾 경신스</h1>
+
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+
     </div>
 
-    <!-- 오늘의 뉴스 (자동화됨) -->
+
+
+    <!-- 오늘의 뉴스 -->
+
     <div class="card">
+
         <h2>📰 오늘의 주요 경제 뉴스</h2>
+
         <ul id="news-feed">
-            <li style="color:gray;">최신 경제 뉴스를 불러오는 중입니다...</li>
+
+            <li><a href="#" target="_blank">한국은행, 기준금리 동결 결정... 시장 반응은?</a></li>
+
+            <li><a href="#" target="_blank">미국 CPI 발표, 예상치 하회하며 증시 반등</a></li>
+
         </ul>
+
     </div>
+
+
 
     <!-- 인사이트 작성 -->
+
     <div class="card">
+
         <h2>💡 내 인사이트 공유하기</h2>
+
         <label for="memberName">이름</label>
+
         <select id="memberName">
+
             <option value="">팀원을 선택하세요</option>
+
             <option value="한태민">한태민</option>
+
             <option value="이채원">이채원</option>
+
             <option value="박은진">박은진</option>
+
         </select>
+
         <label for="newsLink">스크랩한 뉴스 링크 (URL)</label>
+
         <input type="url" id="newsLink" placeholder="https://...">
+
         <label for="summaryText">본문 요약</label>
+
         <textarea id="summaryText" rows="3" placeholder="1. 수치화&#10;2. 인사이트"></textarea>
+
         <label for="additionalResearch">추가 조사</label>
+
         <textarea id="additionalResearch" rows="3" placeholder="기사 내용 외에 새롭게 찾아본 관련 정보나 배경지식을 적어주세요."></textarea>
+
         <label for="insightText">나의 인사이트</label>
+
         <textarea id="insightText" rows="3" placeholder="이 뉴스를 통해 얻은 나만의 시각이나 적용점을 적어주세요."></textarea>
+
         <label for="questionText">의문점</label>
+
         <textarea id="questionText" rows="2" placeholder="기사를 읽고 이해가 안 가거나 팀원들과 토론해보고 싶은 점은?"></textarea>
+
         <button class="submit-btn" id="submitBtn" onclick="submitData()">게시글 등록하기</button>
+
     </div>
 
-    <!-- 팀원들의 인사이트 모아보기 -->
+
+
+    <!-- 팀원들의 인사이트 모아보기 (새로 추가된 영역) -->
+
     <div class="card">
+
         <h2>👀 팀원들의 인사이트</h2>
+
         <div id="loading-text">데이터를 불러오는 중입니다...</div>
+
         <div id="posts-container"></div>
+
     </div>
+
+
 
     <!-- 벌금 현황 -->
+
     <div class="card">
+
         <h2>🚨 스크랩 및 벌금 현황</h2>
+
         <table>
+
             <thead>
+
                 <tr><th>팀원</th><th>제출 여부</th><th>누락 횟수</th><th>현재 벌금</th></tr>
+
             </thead>
+
             <tbody>
+
                 <tr><td>한태민</td><td>✅ 완료</td><td>0회</td><td>0원</td></tr>
+
                 <tr><td>이채원</td><td>✅ 완료</td><td>0회</td><td>0원</td></tr>
+
                 <tr><td>박은진</td><td>❌ 미제출</td><td class="penalty-high">1회</td><td class="penalty-high">5,000원</td></tr>
+
             </tbody>
+
         </table>
+
     </div>
 
-    <!-- 여기서부터 자바스크립트 코드입니다 -->
+
+
     <script>
-        // 이미 성공하셨던 구글 시트 웹 앱 URL이 그대로 들어있습니다.
+
+        // ★★★ 여기에 복사한 웹 앱 URL을 붙여넣으세요! ★★★
+
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWg--HhpidzL_1x1AFgRJ7yOi_bikllugjeR36HJhJo8ug6IpT2T42NY8EDkeKcILIUQ/exec"; 
 
+
+
         // 다크모드
+
         function toggleTheme() {
+
             const html = document.documentElement;
+
             const btn = document.getElementById('themeBtn');
+
             if (html.getAttribute('data-theme') === 'dark') {
+
                 html.removeAttribute('data-theme');
+
                 btn.innerText = '🌙';
+
             } else {
+
                 html.setAttribute('data-theme', 'dark');
+
                 btn.innerText = '☀️';
+
             }
+
         }
 
-        // 구글 뉴스 자동 불러오기
-        function loadNews() {
-            const newsFeed = document.getElementById('news-feed');
-            const rssUrl = "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtcGhHZ0pLVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko";
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-            
-            fetch(apiUrl)
-                .then(res => res.json())
-                .then(data => {
-                    newsFeed.innerHTML = ''; 
-                    const topNews = data.items.slice(0, 5);
-                    topNews.forEach(news => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<a href="${news.link}" target="_blank">${news.title}</a>`;
-                        newsFeed.appendChild(li);
-                    });
-                })
-                .catch(err => {
-                    newsFeed.innerHTML = '<li>뉴스를 불러오는 데 실패했습니다.</li>';
-                });
-        }
 
-        // 페이지 열릴 때 실행
+
+        // 페이지 열릴 때 구글 시트에서 데이터 불러오기
+
         window.onload = function() {
-            loadNews(); // 뉴스 불러오기
 
-            // 구글 시트 데이터 불러오기
+            if(SCRIPT_URL === "여기에_복사한_URL_붙여넣기") {
+
+                document.getElementById('loading-text').innerText = "관리자가 구글 시트 주소를 아직 연결하지 않았습니다.";
+
+                return;
+
+            }
+
             fetch(SCRIPT_URL)
+
                 .then(res => res.json())
+
                 .then(data => {
+
                     const container = document.getElementById('posts-container');
+
                     document.getElementById('loading-text').style.display = 'none';
+
                     container.innerHTML = '';
+
                     
+
                     if(data.length === 0) {
+
                         container.innerHTML = '<div style="text-align:center; padding:20px; color:gray;">아직 등록된 인사이트가 없습니다. 첫 글을 작성해보세요!</div>';
+
                         return;
+
                     }
 
+
+
                     data.forEach(post => {
+
                         const postHTML = `
+
                             <div class="post-card">
+
                                 <div class="post-header">
+
                                     <span class="post-name">🙋 ${post.name}</span>
+
                                     <span class="post-date">${post.date}</span>
+
                                 </div>
+
                                 <div class="post-content">
+
                                     ${post.link ? `<div class="post-link"><a href="${post.link}" target="_blank">🔗 원본 뉴스 링크 이동</a></div>` : ''}
+
                                     <h4>📝 본문 요약</h4>
+
                                     <p>${post.summary || '-'}</p>
+
                                     <h4>🔍 추가 조사</h4>
+
                                     <p>${post.additional || '-'}</p>
+
                                     <h4>💡 인사이트</h4>
+
                                     <p>${post.insight || '-'}</p>
+
                                     <h4>❓ 의문점</h4>
+
                                     <p>${post.question || '-'}</p>
+
                                 </div>
+
                             </div>
+
                         `;
+
                         container.innerHTML += postHTML;
+
                     });
+
                 })
+
                 .catch(err => {
+
                     document.getElementById('loading-text').innerText = "데이터를 불러오는데 실패했습니다.";
+
                 });
+
         };
 
-        // 데이터 등록
+
+
+        // 데이터 등록하여 구글 시트로 보내기
+
         function submitData() {
+
             const name = document.getElementById('memberName').value;
+
             if(!name) { alert("이름을 선택해주세요!"); return; }
+
             
+
             const btn = document.getElementById('submitBtn');
+
             btn.innerText = "저장 중... (약 2~3초 소요)";
+
             btn.disabled = true;
 
+
+
             const formData = new URLSearchParams();
+
             formData.append('name', name);
+
             formData.append('link', document.getElementById('newsLink').value);
+
             formData.append('summary', document.getElementById('summaryText').value);
+
             formData.append('additional', document.getElementById('additionalResearch').value);
+
             formData.append('insight', document.getElementById('insightText').value);
+
             formData.append('question', document.getElementById('questionText').value);
 
+
+
             fetch(SCRIPT_URL, { method: 'POST', body: formData })
+
                 .then(res => {
+
                     alert("성공적으로 등록되었습니다!");
+
+                    // 폼 초기화
+
                     document.getElementById('newsLink').value = '';
+
                     document.getElementById('summaryText').value = '';
+
                     document.getElementById('additionalResearch').value = '';
+
                     document.getElementById('insightText').value = '';
+
                     document.getElementById('questionText').value = '';
+
                     
+
                     btn.innerText = "게시글 등록하기";
+
                     btn.disabled = false;
+
                     
+
+                    // 작성 완료 후 페이지 새로고침하여 목록 갱신
+
                     location.reload(); 
+
                 })
+
                 .catch(err => {
+
                     alert("오류가 발생했습니다. 구글 시트 주소가 정확한지 확인해주세요.");
+
                     btn.innerText = "게시글 등록하기";
+
                     btn.disabled = false;
+
                 });
+
         }
+
     </script>
+
 </body>
+
 </html>
