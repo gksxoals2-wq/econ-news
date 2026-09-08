@@ -123,10 +123,8 @@
             <thead>
                 <tr><th>팀원</th><th>제출 여부</th><th>누락 횟수</th><th>현재 벌금</th></tr>
             </thead>
-            <tbody>
-                <tr><td>한태민</td><td>✅ 완료</td><td>0회</td><td>0원</td></tr>
-                <tr><td>이채원</td><td>✅ 완료</td><td>0회</td><td>0원</td></tr>
-                <tr><td>박은진</td><td>❌ 미제출</td><td class="penalty-high">1회</td><td class="penalty-high">5,000원</td></tr>
+            <tbody id="penalty-body">
+                <tr><td colspan="4" style="color:gray;">구글 시트에서 현황을 불러오는 중입니다...</td></tr>
             </tbody>
         </table>
     </div>
@@ -157,36 +155,58 @@
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
+                    // 1. 인사이트 피드 불러오기
                     const container = document.getElementById('posts-container');
                     document.getElementById('loading-text').style.display = 'none';
                     container.innerHTML = '';
                     
-                    if(data.length === 0) {
+                    const posts = data.posts;
+                    if(posts.length === 0) {
                         container.innerHTML = '<div style="text-align:center; padding:20px; color:gray;">아직 등록된 인사이트가 없습니다. 첫 글을 작성해보세요!</div>';
-                        return;
+                    } else {
+                        posts.forEach(post => {
+                            const postHTML = `
+                                <div class="post-card">
+                                    <div class="post-header">
+                                        <span class="post-name">🙋 ${post.name}</span>
+                                        <span class="post-date">${post.date}</span>
+                                    </div>
+                                    <div class="post-content">
+                                        <h4>📝 본문 요약</h4>
+                                        <p>${post.summary || '-'}</p>
+                                        <h4>🔍 추가 조사</h4>
+                                        <p>${post.additional || '-'}</p>
+                                        <h4>💡 인사이트</h4>
+                                        <p>${post.insight || '-'}</p>
+                                        <h4>❓ 의문점</h4>
+                                        <p>${post.question || '-'}</p>
+                                    </div>
+                                </div>
+                            `;
+                            container.innerHTML += postHTML;
+                        });
                     }
 
-                    data.forEach(post => {
-                        const postHTML = `
-                            <div class="post-card">
-                                <div class="post-header">
-                                    <span class="post-name">🙋 ${post.name}</span>
-                                    <span class="post-date">${post.date}</span>
-                                </div>
-                                <div class="post-content">
-                                    <h4>📝 본문 요약</h4>
-                                    <p>${post.summary || '-'}</p>
-                                    <h4>🔍 추가 조사</h4>
-                                    <p>${post.additional || '-'}</p>
-                                    <h4>💡 인사이트</h4>
-                                    <p>${post.insight || '-'}</p>
-                                    <h4>❓ 의문점</h4>
-                                    <p>${post.question || '-'}</p>
-                                </div>
-                            </div>
-                        `;
-                        container.innerHTML += postHTML;
-                    });
+                    // 2. 벌금 현황판 불러오기
+                    const penaltyBody = document.getElementById('penalty-body');
+                    const penalties = data.penalties;
+                    if(penalties && penalties.length > 0) {
+                        penaltyBody.innerHTML = ''; 
+                        penalties.forEach(p => {
+                            // 누락 횟수에 숫자가 1 이상 들어가면 빨간색 경고 표시
+                            const isHighPenalty = p.missCount.replace(/[^0-9]/g, '') > 0; 
+                            const penaltyClass = isHighPenalty ? 'class="penalty-high"' : '';
+                            const penaltyRow = `
+                                <tr>
+                                    <td>${p.name}</td>
+                                    <td>${p.submitStatus}</td>
+                                    <td ${penaltyClass}>${p.missCount}</td>
+                                    <td ${penaltyClass}>${p.penaltyFee}</td>
+                                </tr>
+                            `;
+                            penaltyBody.innerHTML += penaltyRow;
+                        });
+                    }
                 })
                 .catch(err => {
                     document.getElementById('loading-text').innerText = "데이터를 불러오는데 실패했습니다.";
