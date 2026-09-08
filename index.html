@@ -98,8 +98,6 @@
             <option value="이채원">이채원</option>
             <option value="박은진">박은진</option>
         </select>
-        <label for="newsLink">스크랩한 뉴스 링크 (URL)</label>
-        <input type="url" id="newsLink" placeholder="https://...">
         <label for="summaryText">본문 요약</label>
         <textarea id="summaryText" rows="3" placeholder="1. 수치화&#10;2. 인사이트"></textarea>
         <label for="additionalResearch">추가 조사</label>
@@ -176,7 +174,6 @@
                                     <span class="post-date">${post.date}</span>
                                 </div>
                                 <div class="post-content">
-                                    ${post.link ? `<div class="post-link"><a href="${post.link}" target="_blank">🔗 원본 뉴스 링크 이동</a></div>` : ''}
                                     <h4>📝 본문 요약</h4>
                                     <p>${post.summary || '-'}</p>
                                     <h4>🔍 추가 조사</h4>
@@ -207,7 +204,6 @@
 
             const formData = new URLSearchParams();
             formData.append('name', name);
-            formData.append('link', document.getElementById('newsLink').value);
             formData.append('summary', document.getElementById('summaryText').value);
             formData.append('additional', document.getElementById('additionalResearch').value);
             formData.append('insight', document.getElementById('insightText').value);
@@ -217,7 +213,6 @@
                 .then(res => {
                     alert("성공적으로 등록되었습니다!");
                     // 폼 초기화
-                    document.getElementById('newsLink').value = '';
                     document.getElementById('summaryText').value = '';
                     document.getElementById('additionalResearch').value = '';
                     document.getElementById('insightText').value = '';
