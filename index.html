@@ -3,143 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경제 뉴스 스크랩 & 인사이트</title>
+    <title>경신스 - 경제 뉴스 스크랩</title>
     <style>
         :root {
             --primary-color: #2563eb;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
+            --text-color: #333333;
+            --title-color: #1e293b;
+            --border-color: #cbd5e1;
+            --th-bg: #f1f5f9;
+        }
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e5e5e5;
+            --title-color: #ffffff;
+            --border-color: #333333;
+            --th-bg: #2d2d2d;
         }
         body {
             font-family: 'Pretendard', -apple-system, sans-serif;
             background-color: var(--bg-color);
-            color: #333;
+            color: var(--text-color);
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        h1 { text-align: center; color: #1e293b; }
+        /* Header Style */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .header-spacer {
+            width: 50px; /* 버튼과 너비를 맞춰 제목이 완벽히 가운데 정렬되도록 함 */
+        }
+        .header-title {
+            margin: 0;
+            font-size: 2.2rem; /* 크기 확대 */
+            font-weight: 800;
+            color: var(--title-color);
+            text-align: center;
+            flex-grow: 1;
+            letter-spacing: -0.5px;
+        }
+        .theme-toggle-btn {
+            width: 50px;
+            padding: 6px 0;
+            font-size: 1rem;
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .theme-toggle-btn:hover {
+            background-color: var(--border-color);
+        }
+        /* Cards */
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
         }
-        .card h2 { margin-top: 0; color: var(--primary-color); font-size: 1.2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        input, textarea, button {
+        .card h2 { 
+            margin-top: 0; 
+            color: var(--primary-color); 
+            font-size: 1.1rem; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 10px; 
+        }
+        /* News List (축소) */
+        #news-feed {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+        #news-feed li { margin-bottom: 6px; }
+        #news-feed a { color: var(--text-color); text-decoration: none; }
+        #news-feed a:hover { text-decoration: underline; color: var(--primary-color); }
+        /* Form Elements */
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        select, input, textarea, button {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             box-sizing: border-box;
             font-family: inherit;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s;
         }
-        button {
+        textarea { resize: vertical; }
+        button.submit-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            margin-top: 25px;
+            font-size: 1.05rem;
+            padding: 14px;
         }
-        button:hover { background-color: #1d4ed8; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; }
-        th { background-color: #f1f5f9; font-weight: bold; }
+        button.submit-btn:hover { opacity: 0.9; }
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--th-bg); font-weight: bold; color: var(--title-color); }
         .penalty-high { color: #ef4444; font-weight: bold; }
-        .insight-list { list-style: none; padding: 0; }
-        .insight-item { background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
-        .insight-item strong { color: var(--primary-color); }
     </style>
 </head>
 <body>
 
-    <h1>📈 경제 뉴스 스크랩 팀</h1>
+    <!-- 헤더: 야간모드 버튼 우측, 제목 중앙 -->
+    <div class="header-container">
+        <div class="header-spacer"></div>
+        <h1 class="header-title">🐾 경신스</h1>
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    </div>
 
-    <!-- 1. 오늘의 뉴스 섹션 -->
+    <!-- 1. 오늘의 뉴스 섹션 (크기 축소) -->
     <div class="card">
         <h2>📰 오늘의 주요 경제 뉴스</h2>
         <ul id="news-feed">
             <li><a href="#" target="_blank">한국은행, 기준금리 동결 결정... 시장 반응은?</a></li>
             <li><a href="#" target="_blank">미국 CPI 발표, 예상치 하회하며 증시 반등</a></li>
-            <li><a href="#" target="_blank">금융당국, 가계부채 관리 강화 방안 발표</a></li>
         </ul>
     </div>
 
-    <!-- 2. 인사이트 작성 섹션 -->
+    <!-- 2. 인사이트 작성 섹션 (항목 분리) -->
     <div class="card">
         <h2>💡 내 인사이트 공유하기</h2>
-        <input type="text" id="memberName" placeholder="이름을 입력하세요 (예: 홍길동)">
-        <input type="url" id="newsLink" placeholder="스크랩한 뉴스 링크 (URL)">
-        <textarea id="insightText" rows="4" placeholder="이 뉴스를 읽고 얻은 인사이트나 의견을 자유롭게 적어주세요."></textarea>
-        <button onclick="submitInsight()">게시글 등록하기</button>
+        
+        <label for="memberName">이름</label>
+        <select id="memberName">
+            <option value="">팀원을 선택하세요</option>
+            <option value="한태민">한태민</option>
+            <option value="이채원">이채원</option>
+            <option value="박은진">박은진</option>
+        </select>
+
+        <label for="newsLink">스크랩한 뉴스 링크 (URL)</label>
+        <input type="url" id="newsLink" placeholder="https://...">
+
+        <label for="summaryText">본문 요약</label>
+        <textarea id="summaryText" rows="3" placeholder="1. 수치화&#10;2. 인사이트"></textarea>
+
+        <label for="additionalResearch">추가 조사</label>
+        <textarea id="additionalResearch" rows="3" placeholder="기사 내용 외에 새롭게 찾아본 관련 정보나 배경지식을 적어주세요."></textarea>
+
+        <label for="insightText">나의 인사이트</label>
+        <textarea id="insightText" rows="3" placeholder="이 뉴스를 통해 얻은 나만의 시각이나 적용점을 적어주세요."></textarea>
+
+        <label for="questionText">의문점</label>
+        <textarea id="questionText" rows="2" placeholder="기사를 읽고 이해가 안 가거나 팀원들과 토론해보고 싶은 점은?"></textarea>
+
+        <button class="submit-btn" onclick="alert('인사이트가 성공적으로 등록되었습니다!')">게시글 등록하기</button>
     </div>
 
-    <!-- 3. 인사이트 피드 (임시) -->
-    <div class="card" style="display: none;" id="insightFeedCard">
-        <h2>오늘의 인사이트</h2>
-        <ul class="insight-list" id="insightList"></ul>
-    </div>
-
-    <!-- 4. 벌금 및 누락 현황 섹션 -->
+    <!-- 3. 벌금 및 누락 현황 섹션 -->
     <div class="card">
-        <h2>🚨 벌금 및 스크랩 현황</h2>
+        <h2>🚨 스크랩 및 벌금 현황</h2>
         <table>
             <thead>
                 <tr>
                     <th>팀원</th>
-                    <th>오늘 제출 여부</th>
+                    <th>제출 여부</th>
                     <th>누락 횟수</th>
                     <th>현재 벌금</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>김팀원</td>
+                    <td>한태민</td>
                     <td>✅ 완료</td>
                     <td>0회</td>
                     <td>0원</td>
                 </tr>
                 <tr>
-                    <td>이팀원</td>
-                    <td>❌ 미제출</td>
-                    <td class="penalty-high">3회</td>
-                    <td class="penalty-high">15,000원</td>
+                    <td>이채원</td>
+                    <td>✅ 완료</td>
+                    <td>0회</td>
+                    <td>0원</td>
                 </tr>
                 <tr>
-                    <td>박팀원</td>
-                    <td>✅ 완료</td>
-                    <td>1회</td>
-                    <td>5,000원</td>
+                    <td>박은진</td>
+                    <td>❌ 미제출</td>
+                    <td class="penalty-high">1회</td>
+                    <td class="penalty-high">5,000원</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        // 간단한 동작을 위한 자바스크립트
-        function submitInsight() {
-            const name = document.getElementById('memberName').value;
-            const insight = document.getElementById('insightText').value;
-            
-            if(!name || !insight) {
-                alert('이름과 인사이트를 모두 입력해주세요!');
-                return;
+        // 야간모드(다크모드) 전환 기능
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                btn.innerText = '🌙';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                btn.innerText = '☀️';
             }
-
-            const list = document.getElementById('insightList');
-            const item = document.createElement('li');
-            item.className = 'insight-item';
-            item.innerHTML = `<strong>${name}님의 인사이트:</strong><br><p>${insight}</p>`;
-            
-            list.prepend(item);
-            document.getElementById('insightFeedCard').style.display = 'block';
-            
-            // 입력창 초기화
-            document.getElementById('insightText').value = '';
-            alert('인사이트가 성공적으로 등록되었습니다!');
         }
     </script>
 </body>
