@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,6 +37,7 @@
             padding: 20px;
             transition: background-color 0.3s, color 0.3s;
         }
+        /* Header Style */
         .header-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; position: relative; }
         .header-spacer { width: 50px; }
         .header-title { margin: 0; font-size: 2.2rem; font-weight: 800; color: var(--title-color); text-align: center; flex-grow: 1; letter-spacing: -0.5px; }
@@ -43,20 +49,17 @@
         #news-feed { margin: 0; padding-left: 20px; font-size: 0.9rem; }
         #news-feed li { margin-bottom: 6px; }
         #news-feed a { color: var(--text-color); text-decoration: none; }
-        #news-feed a:hover { text-decoration: underline; color: var(--primary-color); }
         
         label { display: block; margin-top: 15px; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; }
-        select, input, textarea, button { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: var(--bg-color); color: var(--text-color); transition: all 0.3s; }
-        textarea { resize: vertical; }
+        select, input, textarea, button { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: var(--bg-color); color: var(--text-color); }
         button.submit-btn { background-color: var(--primary-color); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 25px; font-size: 1.05rem; padding: 14px; }
-        button.submit-btn:hover { opacity: 0.9; }
-        button.submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
         th { background-color: var(--th-bg); font-weight: bold; color: var(--title-color); }
         .penalty-high { color: #ef4444; font-weight: bold; }
 
+        /* 게시글 피드 스타일 */
         .post-card { border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-top: 15px; background-color: var(--bg-color); }
         .post-header { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
         .post-name { font-weight: bold; color: var(--primary-color); }
@@ -74,13 +77,16 @@
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
     </div>
 
+    <!-- 오늘의 뉴스 -->
     <div class="card">
         <h2>📰 오늘의 주요 경제 뉴스</h2>
         <ul id="news-feed">
-            <li style="color:gray;">최신 경제 뉴스를 불러오는 중입니다...</li>
+            <li><a href="#" target="_blank">한국은행, 기준금리 동결 결정... 시장 반응은?</a></li>
+            <li><a href="#" target="_blank">미국 CPI 발표, 예상치 하회하며 증시 반등</a></li>
         </ul>
     </div>
 
+    <!-- 인사이트 작성 -->
     <div class="card">
         <h2>💡 내 인사이트 공유하기</h2>
         <label for="memberName">이름</label>
@@ -103,12 +109,14 @@
         <button class="submit-btn" id="submitBtn" onclick="submitData()">게시글 등록하기</button>
     </div>
 
+    <!-- 팀원들의 인사이트 모아보기 (새로 추가된 영역) -->
     <div class="card">
         <h2>👀 팀원들의 인사이트</h2>
         <div id="loading-text">데이터를 불러오는 중입니다...</div>
         <div id="posts-container"></div>
     </div>
 
+    <!-- 벌금 현황 -->
     <div class="card">
         <h2>🚨 스크랩 및 벌금 현황</h2>
         <table>
@@ -124,8 +132,10 @@
     </div>
 
     <script>
+        // ★★★ 여기에 복사한 웹 앱 URL을 붙여넣으세요! ★★★
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWg--HhpidzL_1x1AFgRJ7yOi_bikllugjeR36HJhJo8ug6IpT2T42NY8EDkeKcILIUQ/exec"; 
 
+        // 다크모드
         function toggleTheme() {
             const html = document.documentElement;
             const btn = document.getElementById('themeBtn');
@@ -138,30 +148,12 @@
             }
         }
 
-        function loadNews() {
-            const newsFeed = document.getElementById('news-feed');
-            const rssUrl = "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtcGhHZ0pLVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko";
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-            
-            fetch(apiUrl)
-                .then(res => res.json())
-                .then(data => {
-                    newsFeed.innerHTML = ''; 
-                    const topNews = data.items.slice(0, 5);
-                    topNews.forEach(news => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<a href="${news.link}" target="_blank">${news.title}</a>`;
-                        newsFeed.appendChild(li);
-                    });
-                })
-                .catch(err => {
-                    newsFeed.innerHTML = '<li>뉴스를 불러오는 데 실패했습니다.</li>';
-                });
-        }
-
+        // 페이지 열릴 때 구글 시트에서 데이터 불러오기
         window.onload = function() {
-            loadNews();
-
+            if(SCRIPT_URL === "여기에_복사한_URL_붙여넣기") {
+                document.getElementById('loading-text').innerText = "관리자가 구글 시트 주소를 아직 연결하지 않았습니다.";
+                return;
+            }
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
@@ -202,6 +194,7 @@
                 });
         };
 
+        // 데이터 등록하여 구글 시트로 보내기
         function submitData() {
             const name = document.getElementById('memberName').value;
             if(!name) { alert("이름을 선택해주세요!"); return; }
@@ -221,6 +214,7 @@
             fetch(SCRIPT_URL, { method: 'POST', body: formData })
                 .then(res => {
                     alert("성공적으로 등록되었습니다!");
+                    // 폼 초기화
                     document.getElementById('newsLink').value = '';
                     document.getElementById('summaryText').value = '';
                     document.getElementById('additionalResearch').value = '';
@@ -230,6 +224,7 @@
                     btn.innerText = "게시글 등록하기";
                     btn.disabled = false;
                     
+                    // 작성 완료 후 페이지 새로고침하여 목록 갱신
                     location.reload(); 
                 })
                 .catch(err => {
