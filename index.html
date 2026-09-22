@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -28,27 +23,22 @@
             --border-color: #333333;
             --th-bg: #2d2d2d;
         }
-        body {
-            font-family: 'Pretendard', -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        /* Header Style */
-        .header-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; position: relative; }
+        body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-color); max-width: 800px; margin: 0 auto; padding: 20px; transition: 0.3s; }
+        .header-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .header-spacer { width: 50px; }
         .header-title { margin: 0; font-size: 2.2rem; font-weight: 800; color: var(--title-color); text-align: center; flex-grow: 1; letter-spacing: -0.5px; }
-        .theme-toggle-btn { width: 50px; padding: 6px 0; font-size: 1rem; background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .theme-toggle-btn { width: 50px; padding: 6px 0; font-size: 1rem; background-color: transparent; border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; transition: 0.2s; }
         
-        .card { background-color: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: background-color 0.3s; }
+        /* 탭 버튼 스타일 */
+        .tab-container { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 12px; background: none; border: none; font-size: 1.05rem; font-weight: bold; color: gray; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background-color: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .card h2 { margin-top: 0; color: var(--primary-color); font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        
-        #news-feed { margin: 0; padding-left: 20px; font-size: 0.9rem; }
-        #news-feed li { margin-bottom: 6px; }
-        #news-feed a { color: var(--text-color); text-decoration: none; }
         
         label { display: block; margin-top: 15px; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; }
         select, input, textarea, button { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: inherit; background-color: var(--bg-color); color: var(--text-color); }
@@ -56,24 +46,31 @@
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
-        th { background-color: var(--th-bg); font-weight: bold; color: var(--title-color); }
+        th { background-color: var(--th-bg); font-weight: bold; }
         .penalty-high { color: #ef4444; font-weight: bold; }
 
-        /* 게시글 피드 스타일 */
         .post-card { border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-top: 15px; background-color: var(--bg-color); }
         .post-header { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
         .post-name { font-weight: bold; color: var(--primary-color); }
         .post-date { font-size: 0.8rem; color: gray; }
         .post-content h4 { margin: 10px 0 5px 0; font-size: 0.9rem; color: var(--title-color); }
         .post-content p { margin: 0 0 10px 0; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.4; }
-        .post-link a { color: var(--primary-color); font-size: 0.85rem; text-decoration: underline; }
-        #loading-text { text-align: center; font-size: 0.9rem; color: gray; padding: 20px; }
-        /* 페이지네이션 및 삭제 버튼 스타일 */
+        
+        /* 페이지네이션 및 코멘트 스타일 */
         .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
-        .page-btn { padding: 6px 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .page-btn { padding: 6px 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); border-radius: 5px; cursor: pointer; }
         .page-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); font-weight: bold; }
-        .delete-btn { font-size: 0.75rem; color: #ef4444; background: none; border: 1px solid #ef4444; border-radius: 4px; padding: 4px 8px; cursor: pointer; transition: 0.2s; }
-        .delete-btn:hover { background: #ef4444; color: white; }
+        .delete-btn { font-size: 0.75rem; color: #ef4444; background: none; border: 1px solid #ef4444; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+        
+        .comment-section { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); }
+        .comment-item { background: var(--th-bg); padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 0.85rem; }
+        .comment-name { font-weight: bold; color: var(--primary-color); margin-right: 5px; }
+        .comment-input-box { display: flex; gap: 5px; margin-top: 10px; }
+        .comment-input-box select { width: 90px; padding: 8px; font-size: 0.85rem; }
+        .comment-input-box input { flex: 1; padding: 8px; font-size: 0.85rem; }
+        .comment-input-box button { width: 60px; padding: 8px; font-size: 0.85rem; background: var(--title-color); color: var(--card-bg); font-weight: bold; cursor: pointer; }
+        
+        #loading-text { text-align: center; font-size: 0.9rem; color: gray; padding: 20px; }
     </style>
 </head>
 <body>
@@ -83,67 +80,77 @@
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
     </div>
 
-    <!-- 오늘의 뉴스 -->
-    <!-- 📸 오늘의 주요 경제 뉴스 (이미지) -->
-    <div class="card">
-        <h2>📸 오늘의 주요 경제 뉴스</h2>
-        <div style="text-align: center;">
-            <!-- 같은 폴더에 있는 news.jpg 파일을 불러옵니다 -->
-            <img src="news.JPG" alt="오늘의 뉴스 캡처" style="max-width: 100%; border-radius: 8px; border: 1px solid #e2e8f0;">
-            <p style="color: gray; font-size: 0.85rem; margin-top: 10px;">※ 뉴스가 안 보일 경우 강력 새로고침(Ctrl + F5)을 눌러주세요.</p>
+    <!-- 탭 메뉴 -->
+    <div class="tab-container">
+        <button class="tab-btn active" id="btn-scrap" onclick="switchTab('scrap')">📝 스크랩 & 코멘트</button>
+        <button class="tab-btn" id="btn-penalty" onclick="switchTab('penalty')">🚨 벌금 현황</button>
+    </div>
+
+    <!-- 탭 1: 스크랩 화면 -->
+    <div id="tab-scrap" class="tab-content active">
+        <!-- 📸 오늘의 주요 경제 뉴스 -->
+        <div class="card">
+            <h2>📸 오늘의 주요 경제 뉴스</h2>
+            <div style="text-align: center;">
+                <img src="news.JPG" alt="오늘의 뉴스 캡처" style="max-width: 100%; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <p style="color: gray; font-size: 0.85rem; margin-top: 10px;">※ 뉴스가 안 보일 경우 강력 새로고침(Ctrl + F5)</p>
+            </div>
+        </div>
+
+        <!-- 인사이트 작성 -->
+        <div class="card">
+            <h2>💡 내 인사이트 공유하기</h2>
+            <label>이름</label>
+            <select id="memberName">
+                <option value="">선택하세요</option>
+                <option value="한태민">한태민</option>
+                <option value="이채원">이채원</option>
+                <option value="박은진">박은진</option>
+            </select>
+            <label>본문 요약</label>
+            <textarea id="summaryText" rows="3" placeholder="1. 수치화&#10;2. 인사이트"></textarea>
+            <label>추가 조사</label>
+            <textarea id="additionalResearch" rows="3"></textarea>
+            <label>나의 인사이트</label>
+            <textarea id="insightText" rows="3"></textarea>
+            <label>의문점</label>
+            <textarea id="questionText" rows="2"></textarea>
+            <button class="submit-btn" id="submitBtn" onclick="submitData()">게시글 등록하기</button>
+        </div>
+
+        <!-- 팀원들의 인사이트 모아보기 -->
+        <div class="card">
+            <h2>👀 팀원들의 인사이트</h2>
+            <div id="loading-text">데이터를 불러오는 중입니다...</div>
+            <div id="posts-container"></div>
+            <div id="pagination" class="pagination"></div>
         </div>
     </div>
 
-    <!-- 인사이트 작성 -->
-    <div class="card">
-        <h2>💡 내 인사이트 공유하기</h2>
-        <label for="memberName">이름</label>
-        <select id="memberName">
-            <option value="">팀원을 선택하세요</option>
-            <option value="한태민">한태민</option>
-            <option value="이채원">이채원</option>
-            <option value="박은진">박은진</option>
-        </select>
-        <label for="summaryText">본문 요약</label>
-        <textarea id="summaryText" rows="3" placeholder="1. 수치화&#10;2. 인사이트"></textarea>
-        <label for="additionalResearch">추가 조사</label>
-        <textarea id="additionalResearch" rows="3" placeholder="기사 내용 외에 새롭게 찾아본 관련 정보나 배경지식을 적어주세요."></textarea>
-        <label for="insightText">나의 인사이트</label>
-        <textarea id="insightText" rows="3" placeholder="이 뉴스를 통해 얻은 나만의 시각이나 적용점을 적어주세요."></textarea>
-        <label for="questionText">의문점</label>
-        <textarea id="questionText" rows="2" placeholder="기사를 읽고 이해가 안 가거나 팀원들과 토론해보고 싶은 점은?"></textarea>
-        <button class="submit-btn" id="submitBtn" onclick="submitData()">게시글 등록하기</button>
-    </div>
-
-    <!-- 팀원들의 인사이트 모아보기 (새로 추가된 영역) -->
-    <div class="card">
-        <h2>👀 팀원들의 인사이트</h2>
-        <div id="loading-text">데이터를 불러오는 중입니다...</div>
-        <div id="posts-container"></div>
-        <div id="pagination" class="pagination"></div>
-    </div>
-
-    <!-- 벌금 현황 -->
-    <div class="card">
-        <h2>🚨 스크랩 및 벌금 현황</h2>
-        <table>
-            <thead>
-                <tr><th>팀원</th><th>제출 여부</th><th>누락 횟수</th><th>현재 벌금</th></tr>
-            </thead>
-            <tbody id="penalty-body">
-                <tr><td colspan="4" style="color:gray;">구글 시트에서 현황을 불러오는 중입니다...</td></tr>
-            </tbody>
-        </table>
+    <!-- 탭 2: 벌금 현황 화면 -->
+    <div id="tab-penalty" class="tab-content">
+        <div class="card">
+            <h2>🚨 스크랩 및 벌금 현황</h2>
+            <table>
+                <thead>
+                    <tr><th>팀원</th><th>제출 여부</th><th>누락 횟수</th><th>현재 벌금</th></tr>
+                </thead>
+                <tbody id="penalty-body">
+                    <tr><td colspan="4" style="color:gray;">현황을 불러오는 중입니다...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        // ★★★ SCRIPT_URL 꼭 다시 넣기 ★★★
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWg--HhpidzL_1x1AFgRJ7yOi_bikllugjeR36HJhJo8ug6IpT2T42NY8EDkeKcILIUQ/exec"; 
+        // ★★★ 여기에 본인의 구글 웹 앱 URL을 꼭 다시 붙여넣어 주세요! ★★★
+        const SCRIPT_URL = "여기에_복사한_URL_붙여넣기"; 
 
-        let allPosts = [];     // 전체 글을 저장할 공간
-        let currentPage = 1;   // 현재 보고 있는 페이지 번호
-        const postsPerPage = 3; // 한 페이지에 보여줄 글 개수 (3개)
+        let allPosts = [];
+        let currentPage = 1;
+        const postsPerPage = 3;
 
+        // 다크모드
         function toggleTheme() {
             const html = document.documentElement;
             const btn = document.getElementById('themeBtn');
@@ -156,69 +163,77 @@
             }
         }
 
+        // 탭 전환 기능
+        function switchTab(tabId) {
+            document.getElementById('tab-scrap').classList.remove('active');
+            document.getElementById('tab-penalty').classList.remove('active');
+            document.getElementById('btn-scrap').classList.remove('active');
+            document.getElementById('btn-penalty').classList.remove('active');
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
         window.onload = function() {
-            if(SCRIPT_URL === "여기에_복사한_URL_붙여넣기") {
+            if(SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxWg--HhpidzL_1x1AFgRJ7yOi_bikllugjeR36HJhJo8ug6IpT2T42NY8EDkeKcILIUQ/exec") {
                 document.getElementById('loading-text').innerText = "관리자가 구글 시트 주소를 연결하지 않았습니다.";
                 return;
             }
-            loadData();
-        };
-
-        // 데이터 불러오기 함수
-        function loadData() {
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById('loading-text').style.display = 'none';
-                    allPosts = data.posts; // 불러온 전체 글 저장
+                    allPosts = data.posts;
+                    renderPosts();
+                    renderPagination();
                     
-                    renderPosts(); // 글 3개씩 화면에 그리기
-                    renderPagination(); // 아래쪽에 1, 2, 3 페이지 번호 그리기
-                    
-                    // 벌금 현황판 렌더링
                     const penaltyBody = document.getElementById('penalty-body');
-                    const penalties = data.penalties;
-                    if(penalties && penalties.length > 0) {
+                    if(data.penalties && data.penalties.length > 0) {
                         penaltyBody.innerHTML = ''; 
-                        penalties.forEach(p => {
+                        data.penalties.forEach(p => {
                             const isHighPenalty = p.missCount.replace(/[^0-9]/g, '') > 0; 
                             const penaltyClass = isHighPenalty ? 'class="penalty-high"' : '';
-                            const penaltyRow = `
+                            penaltyBody.innerHTML += `
                                 <tr>
-                                    <td>${p.name}</td>
-                                    <td>${p.submitStatus}</td>
-                                    <td ${penaltyClass}>${p.missCount}</td>
-                                    <td ${penaltyClass}>${p.penaltyFee}</td>
-                                </tr>
-                            `;
-                            penaltyBody.innerHTML += penaltyRow;
+                                    <td>${p.name}</td><td>${p.submitStatus}</td>
+                                    <td ${penaltyClass}>${p.missCount}</td><td ${penaltyClass}>${p.penaltyFee}</td>
+                                </tr>`;
                         });
                     }
                 });
-        }
+        };
 
-        // 현재 페이지에 맞는 3개의 글만 화면에 표시하는 함수
         function renderPosts() {
             const container = document.getElementById('posts-container');
             container.innerHTML = '';
-
             if(allPosts.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:gray;">아직 등록된 인사이트가 없습니다.</div>';
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:gray;">아직 글이 없습니다.</div>';
                 return;
             }
 
-            // 전체 글 중에서 이번 페이지에 보여줄 3개만 잘라내기
             const startIndex = (currentPage - 1) * postsPerPage;
-            const endIndex = startIndex + postsPerPage;
-            const pagePosts = allPosts.slice(startIndex, endIndex);
+            const pagePosts = allPosts.slice(startIndex, startIndex + postsPerPage);
 
             pagePosts.forEach(post => {
+                // 댓글 렌더링
+                let commentsHTML = '';
+                if(post.comments && post.comments.length > 0) {
+                    post.comments.forEach(c => {
+                        // 시간에서 불필요한 초/밀리초 부분 깔끔하게 자르기 (선택사항)
+                        const shortDate = c.date.substring(0, 16).replace('T', ' '); 
+                        commentsHTML += `
+                            <div class="comment-item">
+                                <span class="comment-name">${c.name}</span>${c.text}
+                            </div>`;
+                    });
+                }
+
                 const postHTML = `
                     <div class="post-card">
                         <div class="post-header">
                             <span class="post-name">🙋 ${post.name}</span>
                             <div>
-                                <span class="post-date">${post.date} </span>
+                                <span class="post-date">${post.date.substring(0,10)} </span>
                                 <button class="delete-btn" onclick="deletePost(${post.row})">삭제</button>
                             </div>
                         </div>
@@ -228,65 +243,47 @@
                             <h4>💡 인사이트</h4><p>${post.insight || '-'}</p>
                             <h4>❓ 의문점</h4><p>${post.question || '-'}</p>
                         </div>
+                        
+                        <!-- 댓글 영역 -->
+                        <div class="comment-section">
+                            <div class="comment-list">${commentsHTML}</div>
+                            <div class="comment-input-box">
+                                <select id="comment-name-${post.row}">
+                                    <option value="태민">태민</option>
+                                    <option value="채원">채원</option>
+                                    <option value="은진">은진</option>
+                                </select>
+                                <input type="text" id="comment-text-${post.row}" placeholder="코멘트 남기기 (예: 채원님 의견에 동의해요!)" onkeypress="if(event.keyCode==13) submitComment(${post.row})">
+                                <button onclick="submitComment(${post.row})">등록</button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 container.innerHTML += postHTML;
             });
         }
 
-        // 페이지 번호 버튼을 만드는 함수
         function renderPagination() {
             const paginationContainer = document.getElementById('pagination');
             paginationContainer.innerHTML = '';
-            
             const totalPages = Math.ceil(allPosts.length / postsPerPage);
-            if(totalPages <= 1) return; // 1페이지밖에 없으면 번호 숨기기
+            if(totalPages <= 1) return;
 
             for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
                 btn.innerText = i;
-                btn.onclick = () => {
-                    currentPage = i;
-                    renderPosts();
-                    renderPagination();
-                };
+                btn.onclick = () => { currentPage = i; renderPosts(); renderPagination(); };
                 paginationContainer.appendChild(btn);
             }
         }
 
-        // 글 삭제 함수
-        function deletePost(rowNumber) {
-            if(!confirm("이 게시글을 정말 삭제하시겠습니까?")) return;
-            
-            const btn = event.target;
-            btn.innerText = "삭제 중...";
-            btn.disabled = true;
-
-            const formData = new URLSearchParams();
-            formData.append('action', 'delete');
-            formData.append('row', rowNumber);
-
-            fetch(SCRIPT_URL, { method: 'POST', body: formData })
-                .then(res => res.text())
-                .then(data => {
-                    alert("삭제되었습니다.");
-                    location.reload(); // 삭제 후 새로고침
-                })
-                .catch(err => {
-                    alert("삭제 중 오류가 발생했습니다.");
-                    btn.innerText = "삭제";
-                    btn.disabled = false;
-                });
-        }
-
+        // 새 글 등록
         function submitData() {
             const name = document.getElementById('memberName').value;
             if(!name) { alert("이름을 선택해주세요!"); return; }
-            
             const btn = document.getElementById('submitBtn');
-            btn.innerText = "저장 중... (약 2~3초 소요)";
-            btn.disabled = true;
+            btn.innerText = "저장 중..."; btn.disabled = true;
 
             const formData = new URLSearchParams();
             formData.append('name', name);
@@ -296,21 +293,44 @@
             formData.append('question', document.getElementById('questionText').value);
 
             fetch(SCRIPT_URL, { method: 'POST', body: formData })
-                .then(res => {
-                    alert("성공적으로 등록되었습니다!");
-                    document.getElementById('summaryText').value = '';
-                    document.getElementById('additionalResearch').value = '';
-                    document.getElementById('insightText').value = '';
-                    document.getElementById('questionText').value = '';
-                    btn.innerText = "게시글 등록하기";
-                    btn.disabled = false;
-                    location.reload(); 
-                })
-                .catch(err => {
-                    alert("오류가 발생했습니다.");
-                    btn.innerText = "게시글 등록하기";
-                    btn.disabled = false;
-                });
+                .then(() => { alert("등록되었습니다!"); location.reload(); })
+                .catch(() => { alert("오류 발생!"); btn.innerText = "등록하기"; btn.disabled = false; });
+        }
+
+        // 댓글 등록
+        function submitComment(row) {
+            const name = document.getElementById(`comment-name-${row}`).value;
+            const text = document.getElementById(`comment-text-${row}`).value;
+            
+            if(!text.trim()) { alert("코멘트 내용을 입력해주세요!"); return; }
+            
+            const btn = event.target;
+            btn.innerText = "⏳"; btn.disabled = true;
+
+            const formData = new URLSearchParams();
+            formData.append('action', 'comment');
+            formData.append('postRow', row);
+            formData.append('name', name);
+            formData.append('comment', text);
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(() => { location.reload(); })
+                .catch(() => { alert("댓글 등록 오류!"); btn.innerText = "등록"; btn.disabled = false; });
+        }
+
+        // 글 삭제
+        function deletePost(row) {
+            if(!confirm("이 게시글을 삭제하시겠습니까? (달린 댓글은 시트에 보관됩니다)")) return;
+            const btn = event.target;
+            btn.innerText = "삭제중.."; btn.disabled = true;
+            
+            const formData = new URLSearchParams();
+            formData.append('action', 'delete');
+            formData.append('row', row);
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(() => { alert("삭제 완료!"); location.reload(); })
+                .catch(() => { alert("오류 발생!"); btn.innerText = "삭제"; btn.disabled = false; });
         }
     </script>
 </body>
