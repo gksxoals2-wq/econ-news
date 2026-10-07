@@ -229,7 +229,7 @@
                         <div class="post-header">
                             <span class="post-name">🙋 ${post.name}</span>
                             <div>
-                                <span class="post-date">${post.date.substring(0,10)} </span>
+                                <span class="post-date">${post.date.replace(/오전.*/, '').replace(/오후.*/, '').trim()} </span>
                                 <button class="delete-btn" onclick="deletePost(${post.row})">삭제</button>
                             </div>
                         </div>
